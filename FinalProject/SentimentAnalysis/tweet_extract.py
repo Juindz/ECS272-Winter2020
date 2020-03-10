@@ -4,9 +4,41 @@ import csv
 
 #id = 14874721
 #username = pulvereyes
-
+#id = 14396017
+#username = wkulhanek
 #start date: 2012.9.4
 #end date: 2013.8.1
+
+
+set_of_users = ['pulvereyes', 'wkulhanek']
+start_date = "2012-09-04"
+end_date = "2013-08-01"
+set_of_users_politics = ['TheDemocrats', 'GOP']
+start_date_politics = "2016-10-08"
+end_date_politics = "2016-12-08"
+
+def extract_tweets():
+    for user in set_of_users:
+        tweetCriteria = got.manager.TweetCriteria().setUsername(user).setSince(start_date).setUntil(end_date)
+        tweets = got.manager.TweetManager.getTweets(tweetCriteria)
+        user_tweets = [[tweet.date, tweet.text] for tweet in tweets]
+        with open('output_'+user+'.csv', 'w+', newline='') as file:
+            writer = csv.writer(file)
+            for tweet in user_tweets:
+                writer.writerow(tweet)
+            file.close()
+
+
+def extract_tweets_politics():
+    for user in set_of_users_politics:
+        tweetCriteria = got.manager.TweetCriteria().setUsername(user).setSince(start_date_politics).setUntil(end_date_politics)
+        tweets = got.manager.TweetManager.getTweets(tweetCriteria)
+        user_tweets = [[tweet.date, tweet.text] for tweet in tweets]
+        with open('output_'+user+'.csv', 'w+', newline='') as file:
+            writer = csv.writer(file)
+            for tweet in user_tweets:
+                writer.writerow(tweet)
+            file.close()
 
 
 def extract_tweet_1():
@@ -22,7 +54,7 @@ def extract_tweet_1():
 
 def extract_tweet_2():
     #username2 =realDonaldTrump
-    tweetCriteria2 = got.manager.TweetCriteria().setUsername("realDonaldTrump").setSince("2012-09-04").setUntil("2012-10-01")
+    tweetCriteria2 = got.manager.TweetCriteria().setUsername("wkulhanek").setSince("2012-09-04").setUntil("2013-08-01")
     tweets2 = got.manager.TweetManager.getTweets(tweetCriteria2)
     user_tweets2 = [[tweet.date, tweet.text] for tweet in tweets2]
     with open('output2_got.csv', 'w+', newline='') as file2:
@@ -33,5 +65,6 @@ def extract_tweet_2():
 
 
 #if __name__ == "__main__":
-    #extract_tweet_1()
-    #extract_tweet_2()
+     #extract_tweets()
+    # extract_tweet_1()
+    # extract_tweet_2()
