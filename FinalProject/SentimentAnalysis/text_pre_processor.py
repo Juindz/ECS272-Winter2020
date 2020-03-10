@@ -20,7 +20,7 @@ from nltk.tag import pos_tag
 # nltk.download('punkt')
 # nltk.download('averaged_perceptron_tagger')
 en_stops = set(stopwords.words('english'))
-set_of_users = ['pulvereyes', 'wkulhanek']
+users = ['pulvereyes', 'wkulhanek', 'TheDemocrats', 'GOP']
 
 
 def clean_tweet(tweet):
@@ -37,7 +37,7 @@ def clean_tweet(tweet):
 
 
 def process():
-    for user in set_of_users:
+    for user in users:
         with open("output_" + user + ".csv", 'r') as fin, \
                 open("new_output_" + user + ".csv", "w", newline='') as fout:
             reader = csv.reader(fin, delimiter=',')
@@ -78,4 +78,5 @@ def process():
 
 if __name__ == "__main__":
     tweet_extract.extract_tweets()
+    tweet_extract.extract_tweets_politics()
     process()
