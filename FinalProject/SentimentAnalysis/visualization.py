@@ -67,16 +67,16 @@ app.layout = html.Div([
     ]),
     html.Div([
         html.Div([
-            html.H1("overview", style={"textAlign": "center"}),
+            #html.H1("overview", style={"textAlign": "center"}),
             dcc.Graph(id='overview_vis',
                       style={'height': 300})
         ]),
         html.Div([
-            html.H1("expand view", style={"textAlign": "center"}),
+            #html.H1("expand view", style={"textAlign": "center"}),
             dcc.Graph(id='expandview_vis', style={'height': 400}),
         ]),
         html.Div([
-            html.H1("Mood view", style={"textAlign": "center"}),
+            #html.H1("Mood view", style={"textAlign": "center"}),
             dcc.Graph(id='moodview_vis', style={'height': 400}),
         ])
     ]),
@@ -101,7 +101,20 @@ app.layout = html.Div([
 )
 def update_overview(user):
     file = 'new_output_' + user + '.csv'
+    # area = the amount of tweets
+    df = pd.read_csv(file)
+    df.sort_values(by=['DateTime'])
+    # height by the number of tweets of the day
     fig = go.Figure()
+    df['DateTime'] = pd.to_datetime(df['DateTime'])
+    df.index = df['DateTime']
+    dg = df.resample('D').count()
+    #print(dg)
+    fig.add_trace(go.Scatter(x=df['DateTime'], y=dg['Original Tweet'], fill='tozeroy', mode='none'))
+    fig.update_layout(
+        showlegend=True,
+        yaxis_range=(0, 10)
+    )
     return fig
 
 
@@ -113,14 +126,14 @@ def update_expandview(user):
     # on top of valance?
     file = 'new_output_' + user + '.csv'
     df = pd.read_csv(file)
-    df.sort_values(by=['Date'])
+    df.sort_values(by=['DateTime'])
     emotions = []
     # color based on colum name
     # x = datetime
     # y = 8 emotion columns
     fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['sadness'],
         hovertext='sadness',
         hoverinfo='text',
@@ -130,7 +143,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['surprise'],
         hovertext='surprise',
         hoverinfo='text',
@@ -140,7 +153,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['fear'],
         hovertext='fear',
         hoverinfo='text',
@@ -150,7 +163,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['trust'],
         hovertext='trust',
         hoverinfo='text',
@@ -160,7 +173,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['joy'],
         hovertext='joy',
         hoverinfo='text',
@@ -170,7 +183,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['anticipation'],
         hovertext='anticipation',
         hoverinfo='text',
@@ -180,7 +193,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['anger'],
         hovertext='anger',
         hoverinfo='text',
@@ -190,7 +203,7 @@ def update_expandview(user):
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=df['Date'],
+        x=df['DateTime'],
         y=df['disgust'],
         hovertext='disgust',
         hoverinfo='text',
@@ -211,21 +224,21 @@ def update_expandview(user):
     [dash.dependencies.Input('userDropDown', 'value')]
 )
 def update_moodview(user):
+    # area = the amount of tweets
     file = 'new_output_' + user + '.csv'
     df = pd.read_csv(file)
-    df.sort_values(by=['Date'])
+    df.sort_values(by=['DateTime'])
     # height by the number of tweets of the day
     fig = go.Figure()
-    df['Date'] = pd.to_datetime(df['Date'])
-    df.index = df['Date']
-    print(df.resample('D').count())
-    df.to_csv('neww.csv')
-    fig.add_trace(go.Scatter(x=df['Date'], y=df['Original Tweet'], fill='tozeroy', mode='none'))
+    df['DateTime'] = pd.to_datetime(df['DateTime'])
+    df.index = df['DateTime']
+    fig.add_trace(go.Scatter(x=df['DateTime'], y=df['keyword_counts'], fill='tozeroy', mode='none'))
     fig.update_layout(
         showlegend=True,
-        yaxis_range=(0,10)
+        yaxis_range=(0, 10)
     )
     return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8800)
