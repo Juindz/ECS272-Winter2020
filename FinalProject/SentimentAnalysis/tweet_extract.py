@@ -14,8 +14,9 @@ set_of_users = ['pulvereyes', 'wkulhanek']
 start_date = "2012-09-04"
 end_date = "2013-08-01"
 set_of_users_politics = ['TheDemocrats', 'GOP']
-start_date_politics = "2016-10-08"
-end_date_politics = "2016-12-08"
+start_date_politics = "2013-01-01"
+end_date_politics = "2013-02-01"
+
 
 def extract_tweets():
     for user in set_of_users:
@@ -64,7 +65,8 @@ def extract_tweet_2():
         file2.close()
 
 
-#if __name__ == "__main__":
-     #extract_tweets()
+if __name__ == "__main__":
+    extract_tweets()
+    extract_tweets_politics()
     # extract_tweet_1()
     # extract_tweet_2()
