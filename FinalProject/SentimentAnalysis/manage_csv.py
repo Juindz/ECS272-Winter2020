@@ -4,6 +4,7 @@ import pandas as pd
 import tweet_extract
 import text_pre_processor
 import emotion_analysis
+import emotion_analysis_2
 
 # one trace for each emotion
 
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     print('finished politics')
     text_pre_processor.process()
     print('finished pre process')
-    emotion_analysis.get_category_score()
+    emotion_analysis_2.get_category_score()
     print('got scores')
     process_csv()
     print('done processing csv')
