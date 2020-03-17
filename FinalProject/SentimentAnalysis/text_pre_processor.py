@@ -45,7 +45,7 @@ def process():
             tweet_tokenizer = TweetTokenizer()
             # Lemmatization normalizes a word with the context of vocabulary and morphological analysis of words in text
             lemmatizer = WordNetLemmatizer()
-            writer.writerow(['DateTime', 'Original Tweet', 'Processed Tweet'])
+            #writer.writerow(['DateTime', 'Original Tweet', 'Processed Tweet'])
             for row in reader:
                 useful = []
                 lem = []
@@ -77,6 +77,6 @@ def process():
 
 
 if __name__ == "__main__":
-    tweet_extract.extract_tweets()
-    tweet_extract.extract_tweets_politics()
+    #tweet_extract.extract_tweets()
+    #tweet_extract.extract_tweets_politics()
     process()
